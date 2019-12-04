@@ -64,26 +64,28 @@ vFileContentsSuite =
             , fuzz string "It should be possible to decode when contents are a buffer" <|
                 \text ->
                     let
-                        bytes = UTF8.toBytes text
+                        bytes =
+                            UTF8.toBytes text
+
                         -- Create a JSON representation of the UTF8 Buffer content
                         jsonValue =
                             JE.object
-                                [("type", JE.string "Buffer")
-                                , ("data", JE.list JE.int bytes)
+                                [ ( "type", JE.string "Buffer" )
+                                , ( "data", JE.list JE.int bytes )
                                 ]
-                        
+
                         -- Decode the content from JSON
-                        actual = JD.decodeValue VFC.decoder jsonValue
+                        actual =
+                            JD.decodeValue VFC.decoder jsonValue
 
                         -- Extract the String
                         contentString =
                             actual
-                            |> Result.mapError JD.errorToString
-                            |> Result.andThen (\v -> VFC.toString v)                             
-                    in                        
-                        contentString
+                                |> Result.mapError JD.errorToString
+                                |> Result.andThen (\v -> VFC.toString v)
+                    in
+                    contentString
                         |> Expect.equal (Ok text)
-                    
             ]
         , describe "Codec"
             [ fuzz string "Decoding and encoding should yield the original JSON value" <|

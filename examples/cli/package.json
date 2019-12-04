@@ -11,6 +11,7 @@
     "globby": "^10.0.1",
     "print-diff": "^1.0.0",
     "to-vfile": "^6.0.0",
+    "uuid": "^3.3.3",
     "vfile": "^4.0.2"
   },
   "devDependencies": {
