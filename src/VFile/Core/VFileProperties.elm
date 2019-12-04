@@ -24,7 +24,6 @@ encode { cwd, contents, data, history } =
         , ( "history", JE.list JE.string history )
         ]
 
-
 decoder : Decoder VFileProperties
 decoder =
     JD.succeed VFileProperties

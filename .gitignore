@@ -5,3 +5,6 @@ repl-temp-*
 
 # Node
 node_modules/
+
+# Build Output
+dist/

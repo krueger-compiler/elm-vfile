@@ -20,6 +20,7 @@
     "vfile": "^4.0.2"
   },
   "scripts": {
+    "build": "",
     "test": "elm-test",
     "example": "node ./example/index.js"
   }
