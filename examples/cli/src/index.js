@@ -37,5 +37,7 @@ console.dir(app);
       linesBelow: lines.length - 1
     });
     console.log(code);
+
+    console.log(JSON.stringify(file, null, 2));
   }
 })();

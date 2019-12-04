@@ -22,6 +22,6 @@
   "scripts": {
     "build": "",
     "test": "elm-test",
-    "example": "node ./example/index.js"
+    "examples:vfile-usage": "node ./examples/vfile-usage.js"
   }
 }
