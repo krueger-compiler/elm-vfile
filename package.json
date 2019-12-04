@@ -2,7 +2,7 @@
   "name": "elm-vfile",
   "version": "1.0.0",
   "description": "Elm implementation of vfile",
-  "main": "index.js",  
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/krueger-compiler/elm-vfile.git"

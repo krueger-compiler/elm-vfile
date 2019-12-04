@@ -1,24 +1,18 @@
-module VFile exposing(VFile, createFromPath)
+module VFile exposing (VFile, decoder, encode)
 
-import VFile.Core.VFileProperties exposing(VFileProperties)
-import Json.Encode as JE exposing (Value)
-import Json.Decode as JD exposing (Decoder)
+import Json.Decode as JD exposing (Decoder, Value)
+import VFile.Core.VFileProperties as VFP exposing (VFileProperties)
 
-type VFile 
+
+type VFile
     = VFile VFileProperties
 
-createFromPath: String -> Char -> VFile
-createFromPath path separator =
-    let
-        sep = String.fromChar separator
-        pathSegments = String.split sep path
-    in       
-        { cwd = pathSegments
-        , separator = separator
-        , contents = Nothing
-        } |> VFile       
+
+encode : VFile -> Value
+encode (VFile props) =
+    VFP.encode props
 
 
-decoder: Decoder VFile
+decoder : Decoder VFile
 decoder =
-    JD.map3    
+    JD.map VFile VFP.decoder

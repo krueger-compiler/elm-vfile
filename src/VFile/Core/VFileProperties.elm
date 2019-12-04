@@ -1,27 +1,34 @@
-module VFile.Core.VFileProperties exposing (VFileProperties)
+module VFile.Core.VFileProperties exposing (VFileProperties, decoder, encode)
 
-import VFile.Core.VFileContents exposing(VFileContents)
-import Json.Encode as JE exposing (Value)
 import Json.Decode as JD exposing (Decoder, field)
-import Json.Decode.Extra exposing (andMap, optionalNullableField)
+import Json.Decode.Extra exposing (andMap, optionalNullableField, withDefault)
+import Json.Encode as JE exposing (Value)
+import Json.Encode.Extra as JEE
+import VFile.Core.VFileContents as VFC exposing (VFileContents)
+
 
 type alias VFileProperties =
-    { cwd: List String 
-    , separator: Char
-    , contents: Maybe VFileContents
+    { cwd : String
+    , contents : Maybe VFileContents
+    , data : Value
+    , history : List String
     }
 
-type alias RawProperties =
-    { cwd: String
-    , contents: Maybe VFileContents
-    }    
+
+encode : VFileProperties -> Value
+encode { cwd, contents, data, history } =
+    JE.object
+        [ ( "cwd", JE.string cwd )
+        , ( "contents", JEE.maybe VFC.encode contents )
+        , ( "data", data )
+        , ( "history", JE.list JE.string history )
+        ]
+
 
 decoder : Decoder VFileProperties
 decoder =
-    Debug.todo "Implement this"
-
-rawPropertiesDecoder : Decoder RawProperties
-rawPropertiesDecoder =
-    JD.succeed RawProperties
+    JD.succeed VFileProperties
         |> andMap (field "cwd" JD.string)
-        |> andMap (optionalNullableField "contents" )
+        |> andMap (optionalNullableField "contents" VFC.decoder)
+        |> andMap (field "data" JD.value |> withDefault JE.null)
+        |> andMap (field "history" (JD.list JD.string) |> withDefault [])
