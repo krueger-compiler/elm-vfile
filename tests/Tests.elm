@@ -45,6 +45,51 @@ vfileSuite =
                     in
                     JD.decodeValue VFile.decoder jsonValue
                         |> Expect.err
+            , test "A vfile with buffered contents can be decoded from JSON" <|
+                \() ->
+                    let
+                        jsonValue =
+                            JE.object
+                                [ ( "cwd", JE.string "/root/docs" )
+                                , ( "history", JE.list JE.string [ "~/docs/ReadMe.md" ] )
+                                , ( "contents"
+                                  , JE.object
+                                        [ ( "type", JE.string "Buffer" )
+                                        , ( "data", JE.list JE.int [] )
+                                        ]
+                                  )
+                                ]
+
+                        actual =
+                            JD.decodeValue VFile.decoder jsonValue
+
+                        contentType =
+                            actual
+                                |> Result.map VFile.contentType
+                                --|> Debug.log "[elm:contentType]"
+                    in
+                    contentType |> Expect.equal (Ok "Buffer")
+            , test "A vfile with buffered contents can be decoded from a JSON string" <|
+                \() ->
+                    let
+                        json =
+                            "{\n  \"data\": {\n    \"requestId\": \"6ceba260-16f2-11ea-8                755-61fe6914dc9d\"\n  },\n  \"messages\": [],\n  \"history\": [\n    \"data                /hello.md\"\n  ],\n  \"cwd\": \"C:\\\\Users\\\\Guest\\\\Documents\\\\GitHub\\\\elm-vfile\\\\examples\\\\cli\",\n  \"contents\": {\n                    \"type\": \"Buffer\",\n    \"data\": [\n      35,\n      32,\n      72,                \n      101,\n      108,\n      108,\n      111,\n      32,\n      87,\n                      111,\n      114,\n      108,\n      100,\n      33,\n      13,\n      10                \n    ]\n  }\n}"
+
+                        actual =
+                            JD.decodeString VFile.decoder json
+
+                        cwd =
+                            actual
+                                |> Result.map VFile.cwd
+                                --|> Debug.log "[elm:cwd]"
+
+                        contentType =
+                            actual
+                                |> Result.map VFile.contentType
+                                --|> Debug.log "[elm:contentType]"
+                    in
+                    (cwd, contentType) 
+                    |> Expect.equal ((Ok "C:\\Users\\Guest\\Documents\\GitHub\\elm-vfile\\examples\\cli"), (Ok "Buffer"))
             ]
         ]
 

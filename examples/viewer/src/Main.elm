@@ -42,28 +42,9 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Echo value ->
-            let                
-                req =
-                    Debug.log "[elm:Echo value]" (JE.encode 0 value)
-
+            let
                 decoded =
                     JD.decodeValue VFile.decoder value
-
-                cwd =
-                    decoded
-                        |> Result.map VFile.cwd
-                        |> Result.withDefault "N/A"
-                        |> Debug.log "[elm:Echo:cwd]"
-
-                contentType =
-                    decoded
-                        |> Result.map VFile.contentType
-                        |> Debug.log "[elm:Echo:contentType]"
-
-                contents =
-                    decoded
-                        |> Result.map VFile.contents
-                        |> Debug.log "[elm:Echo:contents]"
 
                 vfileEncoder =
                     \vfile ->

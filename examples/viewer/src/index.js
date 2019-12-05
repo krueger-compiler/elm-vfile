@@ -3,7 +3,6 @@ import globby from "globby";
 import vfile from "to-vfile";
 import { promisify } from "util";
 import { codeFrameColumns } from "@babel/code-frame";
-import { EOL } from "os";
 import uuid from "uuid/v1";
 const readVFileAsync = promisify(vfile.read);
 
@@ -29,9 +28,7 @@ console.dir(app);
     );
     console.log("File: ", file.path);
 
-    await echo(file).catch(error => {
-      //console.error(`Error encountered: ${EOL}`, error);
-    });
+    await echo(file);
     //printCode(file);
 
     //console.log(JSON.stringify(file, null, 2));
@@ -42,11 +39,10 @@ function echo(file) {
   return new Promise((resolve, reject) => {
     const requestId = uuid();
     file.data.requestId = requestId;
-    console.log("Sending...\r\n", file);
     const handler = response => {
       const [err, result] = response;
       if (err) {
-        console.error("BOOM!!!:");
+        console.error(err);
         return reject(new Error(err));
       } else {
         printCode(result);

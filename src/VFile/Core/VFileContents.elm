@@ -1,4 +1,4 @@
-module VFile.Core.VFileContents exposing (VFileContents, decoder, encode, fromString, fromUTF8Bytes, toString, toStringOrDefault)
+module VFile.Core.VFileContents exposing (VFileContents, contentType, decoder, encode, fromString, fromUTF8Bytes, toString, toStringOrDefault)
 
 import Json.Decode as JD exposing (Decoder, field)
 import Json.Decode.Extra exposing (when)
@@ -9,6 +9,16 @@ import String.UTF8 as UTF8
 type VFileContents
     = StringContents String
     | UTF8BufferContents (List Int)
+
+
+contentType : VFileContents -> String
+contentType contents =
+    case contents of
+        StringContents _ ->
+            "String"
+
+        UTF8BufferContents _ ->
+            "Buffer"
 
 
 toString : VFileContents -> Result String String
@@ -75,10 +85,10 @@ is a b =
 utf8BufferContentsDecoder : Decoder VFileContents
 utf8BufferContentsDecoder =
     let
-        contentType =
+        type_ =
             field "type" JD.string
 
         utf8Buffer =
             JD.map UTF8BufferContents (field "data" (JD.list JD.int))
     in
-    when contentType (is "Buffer") utf8Buffer
+    when type_ (is "Buffer") utf8Buffer
