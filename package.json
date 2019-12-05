@@ -1,0 +1,27 @@
+{
+  "name": "elm-vfile",
+  "version": "1.0.0",
+  "description": "Elm implementation of vfile",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krueger-compiler/elm-vfile.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/krueger-compiler/elm-vfile/issues"
+  },
+  "homepage": "https://github.com/krueger-compiler/elm-vfile#readme",
+  "devDependencies": {
+    "prettier": "^1.19.1",
+    "to-vfile": "^6.0.0",
+    "vfile": "^4.0.2"
+  },
+  "scripts": {
+    "build": "",
+    "test": "elm-test",
+    "examples:vfile-usage": "node ./examples/vfile-usage.js"
+  }
+}

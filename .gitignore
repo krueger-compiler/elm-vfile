@@ -2,3 +2,9 @@
 elm-stuff
 # elm-repl generated files
 repl-temp-*
+
+# Node
+node_modules/
+
+# Build Output
+dist/
